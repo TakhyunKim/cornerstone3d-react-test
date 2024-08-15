@@ -1,0 +1,28 @@
+import {
+  PanTool,
+  ZoomTool,
+  WindowLevelTool,
+  StackScrollMouseWheelTool,
+  Enums as csToolsEnums,
+} from "@cornerstonejs/tools";
+
+/**
+ * left: mouse left click
+ * right: mouse right click
+ * middle: mouse wheel click
+ * wheel: mouse wheel
+ */
+export const SUPPORT_KEYS = {
+  left: csToolsEnums.MouseBindings.Primary,
+  right: csToolsEnums.MouseBindings.Secondary,
+  middle: csToolsEnums.MouseBindings.Auxiliary,
+  // TODO: Cornerstone 3D 에서 Wheel 커스텀 방식 체크, 아래는 임시 타입
+  wheel: csToolsEnums.MouseBindings.Fourth_Button,
+};
+
+export const MAPPED_SUPPORT_TOOL = {
+  pan: PanTool,
+  zoom: ZoomTool,
+  windowing: WindowLevelTool,
+  frame: StackScrollMouseWheelTool,
+};

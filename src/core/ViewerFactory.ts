@@ -3,16 +3,19 @@ import { ToolManager } from "./tools";
 import { RenderingStackViewport } from "./renderViewport";
 
 import type { MappingToolWithKey } from "./tools";
+import type { StackViewport } from "./renderViewport";
 
-export interface ViewerSnapshot {
-  toolManager: ToolManager;
-  viewport: RenderingStackViewport;
-}
+export type ViewerStatus = {
+  viewport: StackViewport;
+};
 
+export type ViewerSnapshot = ViewerStatus | null;
+
+// TODO: Need to refactor common behaviours like subscribe
 export class ViewerFactory extends ViewerCreator {
   private ToolManager: ToolManager;
   private RenderingStackViewport: RenderingStackViewport;
-  private snapshot: ViewerSnapshot;
+  protected snapshot: ViewerSnapshot;
 
   constructor(viewerId: string) {
     super();
@@ -27,11 +30,23 @@ export class ViewerFactory extends ViewerCreator {
      *
      * Docs: https://react.dev/reference/react/useSyncExternalStore#im-getting-an-error-the-result-of-getsnapshot-should-be-cached
      */
-    this.snapshot = {
-      toolManager: this.ToolManager,
-      viewport: this.RenderingStackViewport,
-    };
+    this.snapshot = null;
   }
+
+  protected setSnapshot = () => {
+    const viewport = this.RenderingStackViewport.getSnapshot();
+
+    if (!viewport) return this.snapshot;
+
+    this.snapshot = {
+      viewport,
+    };
+  };
+
+  protected onUnsubscribe = (): void => {
+    this.ToolManager.destroy();
+    this.RenderingStackViewport.destroy();
+  };
 
   init = async (
     element: HTMLDivElement,
@@ -40,19 +55,6 @@ export class ViewerFactory extends ViewerCreator {
   ) => {
     await this.RenderingStackViewport.init(element, imageIds);
     this.ToolManager.init(element, tools);
+    this.emitChange();
   };
-
-  getSnapshot = () => {
-    return this.snapshot;
-  };
-
-  onSubscribe(): void {
-    this.ToolManager.onSubscribe();
-    this.RenderingStackViewport.onSubscribe();
-  }
-
-  onUnsubscribe(): void {
-    this.ToolManager.onUnsubscribe();
-    this.RenderingStackViewport.onUnsubscribe();
-  }
 }

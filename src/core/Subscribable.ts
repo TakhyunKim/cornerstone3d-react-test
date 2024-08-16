@@ -6,11 +6,34 @@ type Listener = () => void;
  */
 export class Subscribable<TListener extends Function = Listener> {
   protected listeners: Set<TListener>;
+  protected snapshot: unknown;
 
   constructor() {
     this.listeners = new Set();
     this.subscribe = this.subscribe.bind(this);
   }
+
+  protected onSubscribe(): void {
+    // Do nothing
+  }
+
+  protected onUnsubscribe(): void {
+    // Do nothing
+  }
+
+  protected emitChange = () => {
+    this.setSnapshot();
+    this.listeners.forEach((listener) => listener());
+  };
+
+  protected setSnapshot = () => {
+    // Do nothing
+  };
+
+  /** Functions that return elements to be exposed externally from their class */
+  getSnapshot = () => {
+    return this.snapshot;
+  };
 
   subscribe(listener: TListener): () => void {
     this.listeners.add(listener);
@@ -21,17 +44,5 @@ export class Subscribable<TListener extends Function = Listener> {
       this.listeners.delete(listener);
       this.onUnsubscribe();
     };
-  }
-
-  emitChange = () => {
-    this.listeners.forEach((listener) => listener());
-  };
-
-  onSubscribe(): void {
-    // Do nothing
-  }
-
-  onUnsubscribe(): void {
-    // Do nothing
   }
 }

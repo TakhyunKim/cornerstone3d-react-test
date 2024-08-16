@@ -1,6 +1,6 @@
 import { ToolGroupManager, utilities, destroy } from "@cornerstonejs/tools";
 
-import { ViewerCreator } from "../ViewerCreator";
+import { ViewerSlot } from "../ViewerSlot";
 import { renderingViewerEngine } from "../renderEngine";
 import {
   DEFAULT_MAPPED_TOOL_WITH_KEY,
@@ -12,7 +12,7 @@ import type { RenderingEngine as CornerstoneRenderingEngine } from "@cornerstone
 
 import { ToolGroup, MappingToolWithKey } from "./types";
 
-export class ToolManager extends ViewerCreator {
+export class ToolManager extends ViewerSlot {
   private toolManagerId: string;
   private toolGroupManager: ToolGroup | undefined;
   private renderingEngine: CornerstoneRenderingEngine;
@@ -55,9 +55,9 @@ export class ToolManager extends ViewerCreator {
     element.oncontextmenu = (e) => e.preventDefault();
   };
 
-  onUnsubscribe(): void {
+  destroy = (): void => {
     destroy();
-  }
+  };
 
   setTool = (mappingToolWithKeys: MappingToolWithKey[] = []) => {
     const toolGroup = this.toolGroupManager;

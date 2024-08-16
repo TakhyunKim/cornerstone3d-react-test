@@ -1,17 +1,16 @@
 import { Enums } from "@cornerstonejs/core";
 
-import { ViewerCreator } from "../ViewerCreator";
+import { ViewerSlot } from "../ViewerSlot";
 import { renderingViewerEngine } from "../renderEngine";
 
-import type {
-  Types,
-  RenderingEngine as CornerstoneRenderingEngine,
-} from "@cornerstonejs/core";
+import type { RenderingEngine as CornerstoneRenderingEngine } from "@cornerstonejs/core";
 
-export class RenderingStackViewport extends ViewerCreator {
-  private renderingEngine: CornerstoneRenderingEngine;
-  private viewport: StackViewport | null;
+import type { StackViewport, Image } from "./types";
+
+export class RenderingStackViewport extends ViewerSlot {
   private viewportId: string;
+  private viewport: StackViewport | null;
+  private renderingEngine: CornerstoneRenderingEngine;
 
   constructor(viewportId: string) {
     super();
@@ -39,7 +38,7 @@ export class RenderingStackViewport extends ViewerCreator {
     return <StackViewport>this.renderingEngine.getViewport(this.viewportId);
   };
 
-  onUnsubscribe = (): void => {
+  destroy = (): void => {
     this.renderingEngine.disableElement(this.viewportId);
   };
 
@@ -87,8 +86,3 @@ export class RenderingStackViewport extends ViewerCreator {
     return this.viewport;
   };
 }
-
-// Types
-export type ViewportInput = Types.PublicViewportInput;
-export type StackViewport = Types.IStackViewport;
-export type Image = Types.IImage;

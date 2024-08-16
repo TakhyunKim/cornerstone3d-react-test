@@ -26,3 +26,13 @@ export const MAPPED_SUPPORT_TOOL = {
   windowing: WindowLevelTool,
   frame: StackScrollMouseWheelTool,
 };
+
+export const DEFAULT_MAPPED_TOOL_WITH_KEY: Record<
+  keyof typeof MAPPED_SUPPORT_TOOL,
+  keyof typeof SUPPORT_KEYS
+> = {
+  pan: "middle",
+  windowing: "left",
+  frame: "wheel",
+  zoom: "right",
+};

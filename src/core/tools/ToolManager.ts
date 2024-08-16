@@ -28,11 +28,11 @@ export class ToolManager extends ViewerSlot {
     this.toolGroupManager = ToolGroupManager.createToolGroup(toolManagerId);
   }
 
+  /** Added to toolGroupManager by iterating over the supported tools */
   private addSupportedToolsToCornerstone = (): void => {
     const toolGroupManager = this.toolGroupManager;
     if (!toolGroupManager) return;
 
-    /** Added to toolGroupManager by iterating over the supported tools */
     for (const [_, tool] of Object.entries(MAPPED_SUPPORT_TOOL)) {
       toolGroupManager.addTool(tool.toolName);
     }
@@ -59,6 +59,10 @@ export class ToolManager extends ViewerSlot {
     destroy();
   };
 
+  /**
+   * Functions to set the tool you want to use externally and the mouse key you want to map to it.
+   * If there is no key to map, assign the default mouse key
+   */
   setTool = (mappingToolWithKeys: MappingToolWithKey[] = []) => {
     const toolGroup = this.toolGroupManager;
 

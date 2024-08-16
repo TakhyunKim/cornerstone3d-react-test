@@ -57,6 +57,13 @@ export class RenderingStackViewport extends ViewerSlot {
     return currentViewport.getCornerstoneImage();
   };
 
+  /**
+   * This is how to set up multiple images in one Image Viewer
+   *
+   * @param {Object} imageInfo Fill in the information about the image you are currently setting up.
+   * @param {Array} imageInfo.imageIds Insert an array of images in string form. wadouri form is supported.
+   * @param {number} imageInfo.currentImageIdIndex Specify the index in the imageIds array that you want to show initially.
+   */
   setStack = async ({
     imageIds,
     currentImageIdIndex,
@@ -83,6 +90,6 @@ export class RenderingStackViewport extends ViewerSlot {
   };
 
   getSnapshot = (): StackViewport | null => {
-    return this.viewport;
+    return this.getViewport();
   };
 }

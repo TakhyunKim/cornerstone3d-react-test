@@ -35,4 +35,4 @@ class RenderingEngine {
 
 const renderingViewerEngine = await RenderingEngine.getInstance();
 
-export { renderingViewerEngine, CornerstoneRenderingEngine };
+export { renderingViewerEngine };

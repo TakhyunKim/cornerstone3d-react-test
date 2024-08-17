@@ -1,6 +1,7 @@
 import { ViewerCreator } from "./ViewerCreator";
 import { ToolManager } from "./tools";
 import { RenderingStackViewport } from "./renderViewport";
+import { EventHandler } from "./eventHandler";
 
 import type { MappingToolWithKey } from "./tools";
 import type { StackViewport } from "./renderViewport";
@@ -15,13 +16,16 @@ export type ViewerSnapshot = ViewerStatus | null;
 export class ViewerFactory extends ViewerCreator {
   private ToolManager: ToolManager;
   private RenderingStackViewport: RenderingStackViewport;
+  private EventHandler: EventHandler;
   protected snapshot: ViewerSnapshot;
 
   constructor(viewerId: string) {
     super();
 
+    this.EventHandler = new EventHandler();
     this.ToolManager = new ToolManager(viewerId);
     this.RenderingStackViewport = new RenderingStackViewport(viewerId);
+
     /**
      * The reason for specifying snapshot separately is that
      * if you export the same type of object from getSnapshot,
@@ -55,6 +59,7 @@ export class ViewerFactory extends ViewerCreator {
   ) => {
     await this.RenderingStackViewport.init(element, imageIds);
     this.ToolManager.init(element, tools);
+    this.EventHandler.init(element, this.emitChange);
     this.emitChange();
   };
 }

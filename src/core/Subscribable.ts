@@ -21,6 +21,9 @@ export class Subscribable<TListener extends Function = Listener> {
     // Do nothing
   }
 
+  /**
+   * When the method below is called, it calls the listener to trigger react rerendering.
+   */
   protected emitChange = () => {
     this.setSnapshot();
     this.listeners.forEach((listener) => listener());

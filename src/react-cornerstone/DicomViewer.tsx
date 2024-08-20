@@ -6,7 +6,7 @@ import type { MappingToolWithKey } from "../core";
 
 interface DicomViewerProps {
   imageIds: string[];
-  tools: MappingToolWithKey[];
+  tools?: MappingToolWithKey[];
 }
 
 export function DicomViewer({ imageIds, tools }: DicomViewerProps) {

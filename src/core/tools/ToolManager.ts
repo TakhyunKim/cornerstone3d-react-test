@@ -10,7 +10,7 @@ import {
 
 import type { RenderingEngine as CornerstoneRenderingEngine } from "@cornerstonejs/core";
 
-import { ToolGroup, MappingToolWithKey } from "./types";
+import type { ToolGroup, MappingToolWithKey } from "./types";
 
 export class ToolManager extends ViewerSlot {
   private toolManagerId: string;

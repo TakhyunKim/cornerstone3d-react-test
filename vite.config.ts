@@ -7,10 +7,20 @@ export default defineConfig({
   resolve: {
     alias: {
       /**
-       * esm 빌드 시 에러가 발생하여 아래 링크 참고하여 해결
-       * https://github.com/cornerstonejs/cornerstone3D/issues/1071#issuecomment-1937372101
+       * An error when building ESM, follow the link below to resolve it.
+       *
+       * Reference: https://github.com/cornerstonejs/cornerstone3D/issues/1071#issuecomment-1937372101
        */
       "@cornerstonejs/tools": "@cornerstonejs/tools/dist/umd/index.js",
     },
+  },
+  build: {
+    /**
+     * When executing RenderingEngine getInstance,
+     * an error occurred due to a top level await call, so we applied.
+     *
+     * Reference: https://stackoverflow.com/questions/76616620/vite-refuses-to-use-the-correct-build-target-in-my-svelte-ts-project
+     */
+    target: "esnext",
   },
 });

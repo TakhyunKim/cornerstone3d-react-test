@@ -1,9 +1,9 @@
 import { v4 as uuidV4 } from "uuid";
 
-import { ViewerCreator } from "./ViewerCreator";
 import { ToolManager } from "./tools";
 import { RenderingStackViewport } from "./renderViewport";
 import { EventHandler } from "./eventHandler";
+import { Subscribable } from "./Subscribable";
 
 import type { MappingToolWithKey } from "./tools";
 import type { StackViewport } from "./renderViewport";
@@ -15,7 +15,7 @@ export type ViewerStatus = {
 export type ViewerSnapshot = ViewerStatus | null;
 
 // TODO: Need to refactor common behaviours like subscribe
-export class ViewerFactory extends ViewerCreator {
+export class ViewerFactory extends Subscribable {
   private viewerId: string;
   private ToolManager: ToolManager;
   private RenderingStackViewport: RenderingStackViewport;

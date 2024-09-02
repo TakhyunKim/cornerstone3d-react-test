@@ -1,21 +1,19 @@
 import { ToolGroupManager, utilities, destroy } from "@cornerstonejs/tools";
 
 import { ViewerSlot } from "../ViewerSlot";
-import { renderingViewerEngine } from "../renderEngine";
+import { RenderingEngine } from "../renderEngine";
 import {
   DEFAULT_MAPPED_TOOL_WITH_KEY,
   MAPPED_SUPPORT_TOOL,
   SUPPORT_KEYS,
 } from "./constants";
 
-import type { RenderingEngine as CornerstoneRenderingEngine } from "@cornerstonejs/core";
-
 import type { ToolGroup, MappingToolWithKey } from "./types";
 
 export class ToolManager extends ViewerSlot {
   private toolManagerId: string;
   private toolGroupManager: ToolGroup | undefined;
-  private renderingEngine: CornerstoneRenderingEngine;
+  private renderingEngine: RenderingEngine | null;
 
   /**
    * @param toolManagerId toolManagerId must be the same as the viewportId you want to assign
@@ -23,8 +21,8 @@ export class ToolManager extends ViewerSlot {
   constructor(toolManagerId: string) {
     super();
 
+    this.renderingEngine = null;
     this.toolManagerId = toolManagerId;
-    this.renderingEngine = renderingViewerEngine;
     this.toolGroupManager = ToolGroupManager.createToolGroup(toolManagerId);
   }
 
@@ -43,7 +41,7 @@ export class ToolManager extends ViewerSlot {
 
     if (!toolGroupManager) return;
 
-    toolGroupManager.addViewport(this.toolManagerId, this.renderingEngine.id);
+    toolGroupManager.addViewport(this.toolManagerId, this.renderingEngine?.id);
   };
 
   private enableToolElement = (element: HTMLDivElement): void => {
@@ -80,10 +78,11 @@ export class ToolManager extends ViewerSlot {
     });
   };
 
-  init = (
+  init = async (
     element: HTMLDivElement,
     mappingToolWithKeys?: MappingToolWithKey[]
-  ): void => {
+  ) => {
+    this.renderingEngine = await RenderingEngine.getInstance();
     this.addSupportedToolsToCornerstone();
     this.enableToolElement(element);
     this.blockRightClickEvent(element);

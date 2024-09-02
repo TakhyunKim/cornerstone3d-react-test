@@ -1,27 +1,25 @@
 import { Enums } from "@cornerstonejs/core";
 
 import { ViewerSlot } from "../ViewerSlot";
-import { renderingViewerEngine } from "../renderEngine";
-
-import type { RenderingEngine as CornerstoneRenderingEngine } from "@cornerstonejs/core";
+import { RenderingEngine } from "../renderEngine";
 
 import type { StackViewport, Image } from "./types";
 
 export class RenderingStackViewport extends ViewerSlot {
   private viewportId: string;
   private viewport: StackViewport | null;
-  private renderingEngine: CornerstoneRenderingEngine;
+  private renderingEngine: RenderingEngine | null;
 
   constructor(viewportId: string) {
     super();
 
     this.viewport = null;
     this.viewportId = viewportId;
-    this.renderingEngine = renderingViewerEngine;
+    this.renderingEngine = null;
   }
 
   private enableViewportElement = (element: HTMLDivElement) => {
-    this.renderingEngine.enableElement({
+    this.renderingEngine?.enableElement({
       type: Enums.ViewportType.STACK,
       element,
       viewportId: this.viewportId,
@@ -35,11 +33,11 @@ export class RenderingStackViewport extends ViewerSlot {
   };
 
   private getViewport = (): StackViewport => {
-    return <StackViewport>this.renderingEngine.getViewport(this.viewportId);
+    return <StackViewport>this.renderingEngine?.getViewport(this.viewportId);
   };
 
-  destroy = (): void => {
-    this.renderingEngine.disableElement(this.viewportId);
+  override destroy = (): void => {
+    this.renderingEngine?.disableElement(this.viewportId);
   };
 
   resetViewport = (): void => {
@@ -51,7 +49,7 @@ export class RenderingStackViewport extends ViewerSlot {
 
   getImage = (): Image => {
     const currentViewport = <StackViewport>(
-      this.renderingEngine.getViewport(this.viewportId)
+      this.renderingEngine?.getViewport(this.viewportId)
     );
 
     return currentViewport.getCornerstoneImage();
@@ -82,6 +80,7 @@ export class RenderingStackViewport extends ViewerSlot {
   };
 
   init = async (element: HTMLDivElement, imageIds: string[]): Promise<void> => {
+    this.renderingEngine = await RenderingEngine.getInstance();
     this.enableViewportElement(element);
     this.viewport = this.getViewport();
 

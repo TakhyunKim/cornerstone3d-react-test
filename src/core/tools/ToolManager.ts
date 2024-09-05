@@ -31,9 +31,8 @@ export class ToolManager extends ViewerSlot {
     const toolGroupManager = this.toolGroupManager;
     if (!toolGroupManager) return;
 
-    for (const tool of Object.values(MAPPED_SUPPORT_TOOL) as Array<
-      (typeof MAPPED_SUPPORT_TOOL)[keyof typeof MAPPED_SUPPORT_TOOL]
-    >) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const [_, tool] of Object.entries(MAPPED_SUPPORT_TOOL)) {
       toolGroupManager.addTool(tool.toolName);
     }
   };

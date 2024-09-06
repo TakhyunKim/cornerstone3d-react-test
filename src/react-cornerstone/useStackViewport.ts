@@ -24,7 +24,7 @@ export const useStackViewport = ({
   const subscribe = useCallback(
     (listener: () => void) => () =>
       viewerFactoryRef!.current?.subscribe(listener),
-    [element]
+    []
   );
 
   useSyncExternalStore(subscribe, viewerFactoryRef!.current.getSnapshot);

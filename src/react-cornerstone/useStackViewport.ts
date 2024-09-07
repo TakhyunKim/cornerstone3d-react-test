@@ -37,5 +37,5 @@ export const useStackViewport = ({
     };
 
     renderingWithInitialSettings();
-  }, [element, imageIds, viewerFactoryRef.current]);
+  }, [element, imageIds, tools]);
 };

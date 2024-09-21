@@ -61,9 +61,10 @@ export class ViewerFactory extends Subscribable<ViewerSnapshot> {
     imageIds: string[],
     tools?: MappingToolWithKey[]
   ) => {
+    this.EventHandler.init(element, this.emitChange);
+
     await this.RenderingStackViewport.init(element, imageIds);
     this.ToolManager.init(element, tools);
-    this.EventHandler.init(element, this.emitChange);
     this.emitChange();
   };
 }

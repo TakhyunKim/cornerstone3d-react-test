@@ -30,12 +30,8 @@ export const useStackViewport = ({
   useSyncExternalStore(subscribe, viewerFactoryRef!.current.getSnapshot);
 
   useEffect(() => {
-    const renderingWithInitialSettings = async () => {
-      if (viewerFactoryRef.current && element) {
-        await viewerFactoryRef.current.init(element, imageIds, tools);
-      }
-    };
+    if (!viewerFactoryRef.current || !element) return;
 
-    renderingWithInitialSettings();
+    viewerFactoryRef.current.init(element, imageIds, tools);
   }, [element, imageIds, tools]);
 };
